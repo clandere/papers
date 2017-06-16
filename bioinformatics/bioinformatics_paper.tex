@@ -89,7 +89,7 @@ Estimation of the mixture assignment provides the probability of a gene being as
 \vspace{-0.2cm}
 \caption{\textbf{Package overview and plotting functionality.} \package \textbf{Illustration of the angus workflow.} 
 \package allows for the easy estimation of population genetics parameters from genome scale data such as CDS or ribosome footprints. 
-Furthermore, \package provides functionality to asses goodness of fit and visualization.). 
+Furthermore, \package provides functionality for MCMC diagnostics and visualization. 
 }
 \label{fig:plotbin}
 \end{figure*}
@@ -102,8 +102,14 @@ As a result, \package is accessible to researchers with minimal computational ex
 Generally, the only input needed for fitting a model to the data are protein-coding nucleotide sequences in the form of a FASTA file or a flat-file containing codon counts obtained from ribosome foot-printing experiments. 
 If available, users may also provide empirically estimated values of gene expression as additional guide for the model. However, this is not required.
 \package also provides visualization functionality, including plot functions to compare parameter estimates for different mixture distributions, functions to display codon usage patterns and diagnostic functions to assess the goodness of fit in a simple workflow (Figure 1).
-The implemented MCMC approach automatically adapts the proposal width for sampled parameters to improve sampling efficiency and increase computational performance. 
 
+To test hypotheses, it is common practice to compare real data to data simulated under known conditions, allowing the simulated data to serve as a null hypothesis or model. Statistically significant differences between the real and simulated data suggests the real data are not represented by the parameters used to create the simulated data. For this purpose, \package currently allows users to simulate genomic data under a set of known parameters defined by the various models.
+
+\package has built-in features designed to improve the performance of the implemented MCMC approach. For example, the implemented MCMC approach automatically adapts the proposal width for sampled parameters, improving sampling efficiency of the MCMC and computational performance. In addition, \package is capable of thinning the MCMC chain, meaning only every $k^{th}$ sample is kept. Although thinning increases the total number of iterations for the MCMC, it helps reduce autocorrelation between samples and reduces the amount of memory taken up by the underlying data structures. 
+
+To protect users in the case of an abrupt ending to the run or failure of the MCMC to converge, \package outputs restart files throughout the run. This allows the user to begin a MCMC based on the state of another MCMC at a previous time point. \package also is able to create file representations of the MCMC and Parameter R objects. Users are able to reload these files to into the R environment for further analysis and visualization of previous runs.
+ 
+ 
 \subsubsection*{Available models}
 \package currently provides three codon models for analyzing genome scale data.
 The ROC model implements the work presented by Gilchrist et al. (2015), which reliably estimates selection on \underline{r}ibosome \underline{o}verhead \underline{c}ost, mutation bias and allows for the inference of protein synthesis rates. The ROC model is an extension of work by Shah \& Gilchrist (2011) and  Wallace et al (2013). 
@@ -130,7 +136,7 @@ This approach allows genes to be categorized based on differences in codon speci
 Although \package is provided as an R package, the main computational work is implemented in C++ and can be, if desired, compiled as a standalone software.
 R does not provide native C++ support, but the R package Rcpp allows for the exposure of whole C++ classes as modules to R \citep{rcpp_package}.
 This eliminates time consuming data transfer between the R environment and the C++ core during runs, resulting in improved computational performance and allowed for a fully object-oriented code design. 
-The runtime of \package scales as expected linear with genome size and number of iterations, and polynomial with the number of mixture distributions in the data set. The polynomial increase in the number of mixture distributions is explained by the necessity to estimate the protein production rate for each gene in each mixture distribution, as it is a gene specific parameter and the probability of a gene being assigned to a mixture has to be conditioned on it.  
+The runtime of \package scales as expected linear with genome size and number of iterations, and polynomial with the number of mixture distributions in the data set. The polynomial increase in the number of mixture distributions is explained by the necessity to estimate the protein production rate for each gene in each mixture distribution, as it is a gene specific parameter and the probability of a gene being assigned to a mixture has to be conditioned on it.
 
 \bibliographystyle{natbib}
 \bibliography{bioinfo}
