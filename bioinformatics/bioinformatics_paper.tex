@@ -74,13 +74,13 @@ Here, we describe an open-source software implemented in R \citep{rcore} that al
 Currently, \package provides three models to analyze codon counts obtained from coding sequences or ribosome foot-printing experiments. However, \package provides a modular infrastructure such that additional genome scale or even phylogenetic models can be integrated. 
 \package provides a generic mixture distribution to all implemented models which allows for the automatic categorization of data based on differences posterior distributions for parameters of interest.
 
-The \package framework separates data in two dimensions, e.g. genes and codons for sequence data and differentiates three types of parameters.
+The \package framework separates data in two dimensions, e.g. genes and codons for sequence data and differentiates three types of parameters: (1) codon-specific parameters, (2) gene-specific parameters, and (3) hyperparameters. 
 For all models, estimates of each type of parameter are conditioned on the other two types. 
 This Gibbs sampling approach allows for a reduction in dimensionality, increasing sampling efficiency and computational performance.
-1) Codon specific parameters are shared across all genes. These parameters can follow a mixture distribution and can be used to automatically or manually assign genes to clusters.
+Codon-specific parameters are shared across all genes. These parameters can follow a mixture distribution and can be used to automatically or manually assign genes to clusters.
 Estimation of the mixture assignment provides the probability of a gene being assigned to a mixture allowing the user to asses the uncertainty in each mixture assignment, similar to probabilistic clustering.
-2) Gene specific parameters. This parameter type is estimated for each gene independently. If the codon specific parameters follow a mixture distribution, a gene specific parameter is estimated assuming the gene being assigned to each mixture. This not only solves the limitations of traditional mixture approaches but furthermore allows to test hypothesis about gene specific parameters under various conditions, represented by different mixtures.
-3) Hyper parameters, like parametric prior distributions which allows for the implementation of hierarchical models.
+Gene-specific parameters are estimated independently for each gene. If the codon-specific parameters follow a mixture distribution, a gene-specific parameter is estimated assuming the gene being assigned to each mixture. This not only solves the limitations of traditional mixture approaches but furthermore allows to test hypotheses about gene-specific parameters under various conditions, represented by different mixtures.
+The inclusion of hyperparameters, like parametric prior distributions, allows for the implementation of hierarchical models.
 
 
 \begin{figure*}[!tpb]
